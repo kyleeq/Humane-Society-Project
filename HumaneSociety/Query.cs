@@ -221,7 +221,7 @@ namespace HumaneSociety
 
         internal static void RemoveAnimal(Animal animal)
         {
-            throw new NotImplementedException();
+            db.Animals.DeleteOnSubmit(animal);
         }
 
         // TODO: Animal Multi-Trait Search
