@@ -196,13 +196,13 @@ namespace HumaneSociety
 
         internal static Animal GetAnimalByID(int id)
         {
-            var petWithId = db.Animals.Where(a => a.AnimalId == id).First();
+            var petWithId = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
             return petWithId;
         }       
 
         internal static void UpdateAnimal(Animal animal, Dictionary<int, string> updates)
         {
-            throw new NotImplementedException();
+            db.Animals.InsertOnSubmit(animal, updates);
         }
 
         internal static void RemoveAnimal(Animal animal)
@@ -219,18 +219,19 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-            throw new NotImplementedException();
+            var categories = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
+            return categories.CategoryId;
         }
         
         internal static Room GetRoom(int animalId)
         {
-            var getRoom = db.Rooms.Where(a => a.AnimalId == animalId).FirstOrDefault();
+            var getRoom = db.Rooms.Where(r => r.AnimalId == animalId).FirstOrDefault();
             return getRoom;
         }
         
         internal static int GetDietPlanId(string dietPlanName)
         {
-            var dietPlan = db.DietPlans.Where(a => a.Name == dietPlanName).FirstOrDefault();
+            var dietPlan = db.DietPlans.Where(d => d.Name == dietPlanName).FirstOrDefault();
             return dietPlan.DietPlanId;
         }
 
@@ -242,7 +243,8 @@ namespace HumaneSociety
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-            throw new NotImplementedException();
+            var petAdoptionsPending = db.Adoptions.Where(a => a.ApprovalStatus == null);
+            return petAdoptionsPending;
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
