@@ -153,7 +153,7 @@ namespace HumaneSociety
         //// TODO Items: ////
         
         // TODO: Allow any of the CRUD operations to occur here
-        internal static void RunEmployeeQueries(Employee employee, string crudOperation)
+        internal static void RunEmployeeQueries(Employee employee, string crudOperation) //ADD USER INPUT CHECK
         {
            switch (crudOperation)
             {
@@ -174,6 +174,7 @@ namespace HumaneSociety
                     break;
             }
         }
+        // DONE WITH CreateNewEmployee
         internal static void CreateNewEmployee(string firstName, string lastName, string username, string password, string email)
         {
             Employee employee = new Employee();
@@ -194,12 +195,12 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-        internal static Animal GetAnimalByID(int id)
+        internal static Animal GetAnimalByID(int id) //DONE
         {
             var petWithId = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
             return petWithId;
         }       
-
+        // FIGURE OUT HOW TO USE THE DICTIONARY PARAMETER
         internal static void UpdateAnimal(Animal animalWithUpdates/*, Dictionary<int, string> updates*/)
         {
             // find corresponding Animals from Db
@@ -219,7 +220,7 @@ namespace HumaneSociety
             //db.Animals.InsertOnSubmit(animal, updates);
         }
 
-        internal static void RemoveAnimal(Animal animal)
+        internal static void RemoveAnimal(Animal animal) //DONE
         {
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
@@ -232,55 +233,55 @@ namespace HumaneSociety
         }
 
         // TODO: Misc Animal Things
-        internal static int GetCategoryId(string categoryName)
+        internal static int GetCategoryId(string categoryName) //DONE
         {
             var categories = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
             return categories.CategoryId;
         }
         
-        internal static Room GetRoom(int animalId)
+        internal static Room GetRoom(int animalId) //DONE
         {
             var getRoom = db.Rooms.Where(r => r.AnimalId == animalId).FirstOrDefault();
             return getRoom;
         }
         
-        internal static int GetDietPlanId(string dietPlanName)
+        internal static int GetDietPlanId(string dietPlanName) //DONE
         {
             var dietPlan = db.DietPlans.Where(d => d.Name == dietPlanName).FirstOrDefault();
             return dietPlan.DietPlanId;
         }
 
         // TODO: Adoption CRUD Operations
-        internal static void Adopt(Animal animal, Client client)
+        internal static void Adopt(Animal animal, Client client) 
         {
             throw new NotImplementedException();
         }
 
-        internal static IQueryable<Adoption> GetPendingAdoptions()
+        internal static IQueryable<Adoption> GetPendingAdoptions() //DONE
         {
             var petAdoptionsPending = db.Adoptions.Where(a => a.ApprovalStatus == null);
             return petAdoptionsPending;
         }
 
-        internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
+        internal static void UpdateAdoption(bool isAdopted, Adoption adoption) //NEEDS FUNCTIONAL LOGIC
         {
-            throw new NotImplementedException();
+            var updatedAdoption = db.Adoptions.Where(a => a.ApprovalStatus == null);
         }
 
-        internal static void RemoveAdoption(int animalId, int clientId)
+        internal static void RemoveAdoption(int animalId, int clientId) //NEEDS FUNCTIONAL LOGIC
         {
             var adoptionToRemove = db.Adoptions.Where(a => a.AnimalId == clientId).Single();
             db.Adoptions.DeleteOnSubmit(adoptionToRemove);
         }
 
         // TODO: Shots Stuff
-        internal static IQueryable<AnimalShot> GetShots(Animal animal)
+        internal static IQueryable<AnimalShot> GetShots(Animal animal) //REVIEW LOGIC
         {
             var animalShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId);
             return animalShot;
         }
 
-        internal static void UpdateShot(string shotName, Animal animal)
+        internal static void UpdateShot(string shotName, Animal animal) //ASK DEJA FOR LOGIC
         {
             throw new NotImplementedException();
         }
