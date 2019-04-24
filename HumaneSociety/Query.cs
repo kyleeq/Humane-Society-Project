@@ -200,9 +200,23 @@ namespace HumaneSociety
             return petWithId;
         }       
 
-        internal static void UpdateAnimal(Animal animal, Dictionary<int, string> updates)
+        internal static void UpdateAnimal(Animal animalWithUpdates/*, Dictionary<int, string> updates*/)
         {
-            db.Animals.InsertOnSubmit(animal, updates);
+            // find corresponding Animals from Db
+            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == animalWithUpdates.AnimalId).Single();
+
+            // update clientFromDb information with the values on clientWithUpdates (aside from address)
+            animalFromDb.Name = animalWithUpdates.Name;
+            animalFromDb.Weight = animalWithUpdates.Weight;
+            animalFromDb.Age = animalWithUpdates.Age;
+            animalFromDb.Demeanor = animalWithUpdates.Demeanor;
+            animalFromDb.KidFriendly = animalWithUpdates.KidFriendly;
+            animalFromDb.PetFriendly = animalWithUpdates.PetFriendly;
+            animalFromDb.Gender = animalWithUpdates.Gender;
+            animalFromDb.AdoptionStatus = animalWithUpdates.AdoptionStatus;
+
+            db.SubmitChanges();
+            //db.Animals.InsertOnSubmit(animal, updates);
         }
 
         internal static void RemoveAnimal(Animal animal)
