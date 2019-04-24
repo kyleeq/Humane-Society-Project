@@ -189,7 +189,7 @@ namespace HumaneSociety
         }
 
         // TODO: Animal CRUD Operations
-        internal static void AddAnimal(Animal animal) //done
+        internal static void AddAnimal(Animal animal) //DONE
         {
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
@@ -201,23 +201,48 @@ namespace HumaneSociety
             return petWithId;
         }       
         // FIGURE OUT HOW TO USE THE DICTIONARY PARAMETER
-        internal static void UpdateAnimal(Animal animalWithUpdates/*, Dictionary<int, string> updates*/)
+        internal static void UpdateAnimal(Animal animal, Dictionary<int, string> updates)
         {
-            // find corresponding Animals from Db
-            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == animalWithUpdates.AnimalId).Single();
+            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == animal.AnimalId).Single();
 
-            // update clientFromDb information with the values on clientWithUpdates (aside from address)
-            animalFromDb.Name = animalWithUpdates.Name;
-            animalFromDb.Weight = animalWithUpdates.Weight;
-            animalFromDb.Age = animalWithUpdates.Age;
-            animalFromDb.Demeanor = animalWithUpdates.Demeanor;
-            animalFromDb.KidFriendly = animalWithUpdates.KidFriendly;
-            animalFromDb.PetFriendly = animalWithUpdates.PetFriendly;
-            animalFromDb.Gender = animalWithUpdates.Gender;
-            animalFromDb.AdoptionStatus = animalWithUpdates.AdoptionStatus;
+            foreach (KeyValuePair<int, string> pet in updates)
+                switch (pet.Key)
+                {
+                    case 1:
+                        animal.Name = pet.Value;
+                        break;
+                    case 2:
+                        animal.Weight = int.Parse(pet.Value);
+                        break;
+                    case 3:
+                        animal.Age = int.Parse(pet.Value);
+                        break;
+                    case 4:
+                        animal.Demeanor = pet.Value;
+                        break;
+                    case 5:
+                        animal.KidFriendly = bool.Parse(pet.Value);
+                        break;
+                    case 6:
+                        animal.PetFriendly = bool.Parse(pet.Value);
+                        break;
+                    case 7:
+                        animal.Gender = pet.Value;
+                        break;
+                    case 8:
+                        animal.AdoptionStatus = pet.Value;
+                        break;
+                }
 
+            animalFromDb.Name = animal.Name;
+            animalFromDb.Weight = animal.Weight;
+            animalFromDb.Age = animal.Age;
+            animalFromDb.Demeanor = animal.Demeanor;
+            animalFromDb.KidFriendly = animal.KidFriendly;
+            animalFromDb.PetFriendly = animal.PetFriendly;
+            animalFromDb.Gender = animal.Gender;
+            animalFromDb.AdoptionStatus = animal.AdoptionStatus;
             db.SubmitChanges();
-            //db.Animals.InsertOnSubmit(animal, updates);
         }
 
         internal static void RemoveAnimal(Animal animal) //DONE
@@ -252,9 +277,10 @@ namespace HumaneSociety
         }
 
         // TODO: Adoption CRUD Operations
-        internal static void Adopt(Animal animal, Client client) 
+        internal static void Adopt(Animal animal, Client client) //FIX LOGIC
         {
-            throw new NotImplementedException();
+            //client.ClientId = db.Adoptions.ClientId;
+            //animal.AnimalId = db.Adoptions.AnimalId;
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions() //DONE
@@ -266,16 +292,18 @@ namespace HumaneSociety
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption) //NEEDS FUNCTIONAL LOGIC
         {
             var updatedAdoption = db.Adoptions.Where(a => a.ApprovalStatus == null);
+            db.SubmitChanges(); //?
         }
 
-        internal static void RemoveAdoption(int animalId, int clientId) //NEEDS FUNCTIONAL LOGIC
+        internal static void RemoveAdoption(int animalId, int clientId) //DONE
         {
-            var adoptionToRemove = db.Adoptions.Where(a => a.AnimalId == clientId).Single();
+            var adoptionToRemove = db.Adoptions.Where(a => a.ClientId == clientId && a.AnimalId == animalId).Single();
             db.Adoptions.DeleteOnSubmit(adoptionToRemove);
+            db.SubmitChanges();
         }
 
         // TODO: Shots Stuff
-        internal static IQueryable<AnimalShot> GetShots(Animal animal) //REVIEW LOGIC
+        internal static IQueryable<AnimalShot> GetShots(Animal animal) //DONE
         {
             var animalShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId);
             return animalShot;
@@ -283,6 +311,11 @@ namespace HumaneSociety
 
         internal static void UpdateShot(string shotName, Animal animal) //ASK DEJA FOR LOGIC
         {
+            //var shot = db.AnimalShots.Where(s => s.AnimalId == animal.AnimalId).Single();
+            //shot.ShotId += db.AnimalShot.ShotId;
+
+            //AnimalShot.DateReceived = animalWithUpdates.DateReceived;
+            //db.SubmitChanges();
             throw new NotImplementedException();
         }
     }

@@ -189,7 +189,7 @@ namespace HumaneSociety
             string input = UserInterface.GetUserInput();
             if(input.ToLower() == "8" ||input.ToLower() == "finished")
             {
-                Query.UpdateAnimal(animal, updates);
+                /*Query.*/UpdateAnimal(animal/*, updates*/); //change if we use dictionary
             }
             else
             {
