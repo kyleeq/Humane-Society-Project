@@ -174,7 +174,7 @@ namespace HumaneSociety
                     break;
             }
         }
-        // DONE WITH CreateNewEmployee
+        // FIX CreateNewEmployee
         internal static void CreateNewEmployee(string firstName, string lastName, string username, string password, string email)
         {
             Employee employee = new Employee();
@@ -189,7 +189,7 @@ namespace HumaneSociety
         }
 
         // TODO: Animal CRUD Operations
-        internal static void AddAnimal(Animal animal) //DONE
+        internal static void AddAnimal(Animal animal)
         {
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
@@ -260,8 +260,16 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName) //DONE
         {
-            var categories = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
-            return categories.CategoryId;
+            var Category = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
+            if (Category == null)
+            {
+                Category category = new Category();
+                category.Name = categoryName;
+                db.Categories.InsertOnSubmit(category);
+                db.SubmitChanges();
+                return GetCategoryId(categoryName);
+            }
+            return Category.CategoryId;
         }
         
         internal static Room GetRoom(int animalId) //DONE
