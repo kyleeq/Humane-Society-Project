@@ -289,10 +289,11 @@ namespace HumaneSociety
             return petAdoptionsPending;
         }
 
-        internal static void UpdateAdoption(bool isAdopted, Adoption adoption) //NEEDS FUNCTIONAL LOGIC
+        internal static void UpdateAdoption(bool isAdopted, Adoption adoption) //DONE
         {
-            var updatedAdoption = db.Adoptions.Where(a => a.ApprovalStatus == null);
-            db.SubmitChanges(); //?
+            Adoption adoptionFromDb = db.Adoptions.Where(a => a.ClientId == adoption.ClientId).Single();
+            adoptionFromDb.ApprovalStatus = adoption.ApprovalStatus;
+            db.SubmitChanges();
         }
 
         internal static void RemoveAdoption(int animalId, int clientId) //DONE
