@@ -258,7 +258,7 @@ namespace HumaneSociety
         }
 
         // TODO: Misc Animal Things
-        internal static int GetCategoryId(string categoryName) //DONE
+        internal static int GetCategoryId(string categoryName)
         {
             var Category = db.Categories.Where(c => c.Name == categoryName).FirstOrDefault();
             if (Category == null)
@@ -278,9 +278,17 @@ namespace HumaneSociety
             return getRoom;
         }
         
-        internal static int GetDietPlanId(string dietPlanName) //DONE
+        internal static int GetDietPlanId(string dietPlanName)
         {
             var dietPlan = db.DietPlans.Where(d => d.Name == dietPlanName).FirstOrDefault();
+            if (dietPlan == null)
+            {
+                DietPlan newDietPlan = new DietPlan();
+                newDietPlan.Name = dietPlanName;
+                db.DietPlans.InsertOnSubmit(newDietPlan);
+                db.SubmitChanges();
+                return GetDietPlanId(dietPlanName);
+            }
             return dietPlan.DietPlanId;
         }
 
