@@ -153,7 +153,7 @@ namespace HumaneSociety
         //// TODO Items: ////
         
         // TODO: Allow any of the CRUD operations to occur here
-        internal static void RunEmployeeQueries(Employee employee, string crudOperation) //ADD USER INPUT CHECK
+        internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
            switch (crudOperation)
             {
@@ -254,7 +254,46 @@ namespace HumaneSociety
         // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            throw new NotImplementedException();
+            List<Animal> animalFromDb = db.Animals.Select(a => a).ToList();
+
+            foreach (KeyValuePair<int, string> pet in updates)
+                switch (pet.Key)
+                {
+                    case 1:
+                        animalFromDb = animalFromDb.Where(a => a.Name == pet.Value).ToList();
+                        break;
+                    case 2:
+                        animalFromDb = animalFromDb.Where(a => a.Weight == int.Parse(pet.Value)).ToList();
+                        break;
+                    case 3:
+                        animalFromDb = animalFromDb.Where(a => a.Age == int.Parse(pet.Value)).ToList();
+                        break;
+                    case 4:
+                        animalFromDb = animalFromDb.Where(a => a.Demeanor == pet.Value).ToList();
+                        break;
+                    case 5:
+                        animalFromDb = animalFromDb.Where(a => a.KidFriendly == bool.Parse(pet.Value)).ToList();
+                        break;
+                    case 6:
+                        animalFromDb = animalFromDb.Where(a => a.PetFriendly == bool.Parse(pet.Value))ToList();
+                        break;
+                    case 7:
+                        animalFromDb = animalFromDb.Where(a => a.Gender == pet.Value)ToList();
+                        break;
+                    case 8:
+                        animalFromDb = animalFromDb.Where(a => a.AdoptionStatus == pet.Value).ToList();
+                        break;
+                }
+
+            animalFromDb.Name = animal.Name;
+            animalFromDb.Weight = animal.Weight;
+            animalFromDb.Age = animal.Age;
+            animalFromDb.Demeanor = animal.Demeanor;
+            animalFromDb.KidFriendly = animal.KidFriendly;
+            animalFromDb.PetFriendly = animal.PetFriendly;
+            animalFromDb.Gender = animal.Gender;
+            animalFromDb.AdoptionStatus = animal.AdoptionStatus;
+            db.SubmitChanges();
         }
 
         // TODO: Misc Animal Things
