@@ -309,14 +309,13 @@ namespace HumaneSociety
             return animalShot;
         }
 
-        internal static void UpdateShot(string shotName, Animal animal) //ASK DEJA FOR LOGIC
+        internal static void UpdateShot(string shotName, Animal animal) //DONE 
         {
-            //var shot = db.AnimalShots.Where(s => s.AnimalId == animal.AnimalId).Single();
-            //shot.ShotId += db.AnimalShot.ShotId;
-
-            //AnimalShot.DateReceived = animalWithUpdates.DateReceived;
-            //db.SubmitChanges();
-            throw new NotImplementedException();
+            var AnimalIdShotId = from Shot in db.Shots
+                            join AnimalShot in db.AnimalShots on Shot.ShotId equals AnimalShot.ShotId
+                            select new {AnimalId = AnimalShot.ShotId, ShotName = Shot.Name, ShotDate = AnimalShot.DateReceived};
+            var selectedShot = AnimalIdShotId.Where(a => a.ShotName == shotName && a.AnimalId == animal.AnimalId).FirstOrDefault();            
+            db.SubmitChanges();
         }
     }
 }
