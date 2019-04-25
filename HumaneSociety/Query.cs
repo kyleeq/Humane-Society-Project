@@ -252,7 +252,7 @@ namespace HumaneSociety
         }
 
         // TODO: Animal Multi-Trait Search
-        internal static IQueryable<Animal> SearchForAnimalByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
+        internal static List<Animal> SearchForAnimalByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
             List<Animal> animalFromDb = db.Animals.Select(a => a).ToList();
 
@@ -275,25 +275,16 @@ namespace HumaneSociety
                         animalFromDb = animalFromDb.Where(a => a.KidFriendly == bool.Parse(pet.Value)).ToList();
                         break;
                     case 6:
-                        animalFromDb = animalFromDb.Where(a => a.PetFriendly == bool.Parse(pet.Value))ToList();
+                        animalFromDb = animalFromDb.Where(a => a.PetFriendly == bool.Parse(pet.Value)).ToList();
                         break;
                     case 7:
-                        animalFromDb = animalFromDb.Where(a => a.Gender == pet.Value)ToList();
+                        animalFromDb = animalFromDb.Where(a => a.Gender == pet.Value).ToList();
                         break;
                     case 8:
                         animalFromDb = animalFromDb.Where(a => a.AdoptionStatus == pet.Value).ToList();
                         break;
                 }
-
-            animalFromDb.Name = animal.Name;
-            animalFromDb.Weight = animal.Weight;
-            animalFromDb.Age = animal.Age;
-            animalFromDb.Demeanor = animal.Demeanor;
-            animalFromDb.KidFriendly = animal.KidFriendly;
-            animalFromDb.PetFriendly = animal.PetFriendly;
-            animalFromDb.Gender = animal.Gender;
-            animalFromDb.AdoptionStatus = animal.AdoptionStatus;
-            db.SubmitChanges();
+            return animalFromDb.Select(a => a).ToList();
         }
 
         // TODO: Misc Animal Things
