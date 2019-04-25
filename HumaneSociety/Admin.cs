@@ -120,7 +120,7 @@ namespace HumaneSociety
             employee.FirstName = UserInterface.GetStringData("first name", "the employee's");
             employee.LastName = UserInterface.GetStringData("last name", "the employee's");
             employee.EmployeeNumber = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
-            employee.Email = UserInterface.GetStringData("email", "the employee's"); ;
+            employee.Email = UserInterface.GetStringData("email", "the employee's"); 
             try
             {
                 Query.RunEmployeeQueries(employee, "create");

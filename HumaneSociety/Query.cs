@@ -164,18 +164,19 @@ namespace HumaneSociety
                     Console.WriteLine($"First Name:{employee.FirstName}\n Last Name:{employee.LastName}\n" +
                         $"Username: {employee.UserName}\n Email Address: {employee.Email}\n" +
                         $"Employee ID: {employee.EmployeeId}\n Employee Number: {employee.EmployeeNumber}");
+                    Console.ReadLine();
                     break;                    
                 case "delete":
                     db.Employees.DeleteOnSubmit(employee);
                     db.SubmitChanges();
                     break;
                 case "create":
-                    CreateNewEmployee(employee.FirstName, employee.LastName, employee.UserName, employee.Password, employee.Email);
+                    CreateNewEmployee(employee.FirstName, employee.LastName, employee.UserName, employee.Password, employee.Email, employee.EmployeeId);
                     break;
             }
         }
         // FIX CreateNewEmployee
-        internal static void CreateNewEmployee(string firstName, string lastName, string username, string password, string email)
+        internal static void CreateNewEmployee(string firstName, string lastName, string username, string password, string email, int employeeId)
         {
             Employee employee = new Employee();
 
@@ -184,6 +185,7 @@ namespace HumaneSociety
             employee.UserName = username;
             employee.Password = password;
             employee.Email = email;
+            employee.EmployeeId = employeeId;
             db.Employees.InsertOnSubmit(employee);
             db.SubmitChanges();
         }
@@ -195,12 +197,12 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-        internal static Animal GetAnimalByID(int id) //DONE
+        internal static Animal GetAnimalByID(int id)
         {
             var petWithId = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
             return petWithId;
         }       
-        // FIGURE OUT HOW TO USE THE DICTIONARY PARAMETER
+        
         internal static void UpdateAnimal(Animal animal, Dictionary<int, string> updates)
         {
             Animal animalFromDb = db.Animals.Where(a => a.AnimalId == animal.AnimalId).Single();
@@ -245,14 +247,14 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-        internal static void RemoveAnimal(Animal animal) //DONE
+        internal static void RemoveAnimal(Animal animal)
         {
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
         }
 
         // TODO: Animal Multi-Trait Search
-        internal static List<Animal> SearchForAnimalByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
+        internal static List<Animal> SearchForAnimalByMultipleTraits(Dictionary<int, string> updates)
         {
             List<Animal> animalFromDb = db.Animals.Select(a => a).ToList();
 
@@ -302,7 +304,7 @@ namespace HumaneSociety
             return Category.CategoryId;
         }
         
-        internal static Room GetRoom(int animalId) //DONE
+        internal static Room GetRoom(int animalId)
         {
             var getRoom = db.Rooms.Where(r => r.AnimalId == animalId).FirstOrDefault();
             return getRoom;
@@ -325,13 +327,20 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client) //FIX LOGIC
         {
-            //client.ClientId = db.Adoptions.ClientId;
-            //animal.AnimalId = db.Adoptions.AnimalId;
+            var Animal = db.Adoptions.Where(a => a.AnimalId == animal.AnimalId && a.ClientId == client.ClientId).Single();
+            Animal.ApprovalStatus = "Pending";  //set approval status to pending
+            Adoption adoption = new Adoption
+            {
+                AdoptionFee = 50,
+                PaymentCollected = true
+            };
+            db.Adoptions.InsertOnSubmit(adoption);
+            db.SubmitChanges();
         }
 
-        internal static IQueryable<Adoption> GetPendingAdoptions() //DONE
+        internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-            var petAdoptionsPending = db.Adoptions.Where(a => a.ApprovalStatus == null);
+            var petAdoptionsPending = db.Adoptions.Where(a => a.ApprovalStatus == "pending");
             return petAdoptionsPending;
         }
 
