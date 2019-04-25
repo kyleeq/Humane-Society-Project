@@ -325,7 +325,7 @@ namespace HumaneSociety
         }
 
         // TODO: Adoption CRUD Operations
-        internal static void Adopt(Animal animal, Client client) //FIX LOGIC
+        internal static void Adopt(Animal animal, Client client) 
         {
             var Animal = db.Adoptions.Where(a => a.AnimalId == animal.AnimalId && a.ClientId == client.ClientId).Single();
             Animal.ApprovalStatus = "Pending";  //set approval status to pending
@@ -344,14 +344,14 @@ namespace HumaneSociety
             return petAdoptionsPending;
         }
 
-        internal static void UpdateAdoption(bool isAdopted, Adoption adoption) //DONE
+        internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
             Adoption adoptionFromDb = db.Adoptions.Where(a => a.ClientId == adoption.ClientId).Single();
             adoptionFromDb.ApprovalStatus = adoption.ApprovalStatus;
             db.SubmitChanges();
         }
 
-        internal static void RemoveAdoption(int animalId, int clientId) //DONE
+        internal static void RemoveAdoption(int animalId, int clientId)
         {
             var adoptionToRemove = db.Adoptions.Where(a => a.ClientId == clientId && a.AnimalId == animalId).Single();
             db.Adoptions.DeleteOnSubmit(adoptionToRemove);
@@ -359,7 +359,7 @@ namespace HumaneSociety
         }
 
         // TODO: Shots Stuff
-        internal static IQueryable<AnimalShot> GetShots(Animal animal) //DONE
+        internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
             var animalShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId);
             return animalShot;
