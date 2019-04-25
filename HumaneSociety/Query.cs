@@ -260,10 +260,10 @@ namespace HumaneSociety
                 switch (pet.Key)
                 {
                     case 1:
-                        animalFromDb = animalFromDb.Where(a => a.Name == pet.Value).ToList();
+                        animalFromDb = animalFromDb.Where(a => a.Category.Name == pet.Value).ToList();
                         break;
                     case 2:
-                        animalFromDb = animalFromDb.Where(a => a.Weight == int.Parse(pet.Value)).ToList();
+                        animalFromDb = animalFromDb.Where(a => a.Name == pet.Value).ToList();
                         break;
                     case 3:
                         animalFromDb = animalFromDb.Where(a => a.Age == int.Parse(pet.Value)).ToList();
